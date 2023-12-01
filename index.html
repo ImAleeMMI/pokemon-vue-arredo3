@@ -51,11 +51,11 @@
         <div class="bottom-menu">
           <div class="battle-text text-box-left">What will Charizard do?</div>
           <div class="text-box-right">
-            <div id="battleOptions">
-              <h4 class="battle-text-top-left" v-for="option in optionUserPokemon">{{ option.option1 }}</h4> <!--Add Button 'Scratch' 'Fly' 'Flamethrower' 'Ember'-->
-              <h4 class="battle-text-top-right"v-for="option in optionUserPokemon">{{ option.option2 }}</h4> <!--You're our only hope Charizard!-->
-              <h4 class="battle-text-bottom-left"v-for="option in optionUserPokemon">{{ option.option3 }}</h4> <!--No items in bag.-->
-              <h4 class="battle-text-bottom-right"v-for="option in optionUserPokemon">{{ option.option4 }}</h4> <!--Can'Espace-->
+            <div id="battleOptions"v-for="option in optionUserPokemon">
+              <h4 class="battle-text-top-left" >{{ option.option1 }}</h4> <!--Add Button 'Scratch' 'Fly' 'Flamethrower' 'Ember'-->
+              <h4 class="battle-text-top-right">{{ option.option2 }}</h4> <!--You're our only hope Charizard!-->
+              <h4 class="battle-text-bottom-left">{{ option.option3 }}</h4> <!--No items in bag.-->
+              <h4 class="battle-text-bottom-right">{{ option.option4 }}</h4> <!--Can'Espace-->
             </div>
             
           </div>
