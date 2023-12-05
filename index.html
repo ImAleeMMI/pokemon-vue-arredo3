@@ -2,9 +2,7 @@
 <html lang="en">
   <link type="text/css" rel="stylesheet" id="dark-mode-custom-link" />
   <link type="text/css" rel="stylesheet" id="dark-mode-general-link" />
-  <style lang="en" type="text/css" id="dark-mode-custom-style"></style>
-  <style lang="en" type="text/css" id="dark-mode-native-style"></style>
-  <style lang="en" type="text/css" id="dark-mode-native-sheet"></style>
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,46 +16,102 @@
     <script defer src="app.js"></script>
   </head>
   <body>
-    <div id="game">
-      <h1 class="title">Arredo3 Pokemon Battle</h1>
-      <div class="battle-scene">
-        <div class="box-top-left">
-          <h2 class="pokemon" v-for="bot in botPokemon">{{ bot.name }}</h2>
-          <div class="hp-bar-top">
-            <div class="hp-bar-fill" style="width: 100%"></div>
-          </div>
-          <h4 class="level" v-for="bot in botPokemon">{{ bot.liv }}</h4>
-        </div>
-        <div class="box-top-right">
-          <img
-            src="http://pre01.deviantart.net/959a/th/pre/f/2016/075/4/6/095_onix_by_rayo123000-d9vbjj3.png"
-            class="pokemon-top"
-          />
-        </div>
-        <div class="box-bottom-left">
-          <img
-            src="http://guidesmedia.ign.com/guides/059687/images/blackwhite/pokemans_006.gif"
-            class="pokemon-bottom"
-          />
-        </div>
-        <div class="box-bottom-right">
-          <h2 class="pokemon" v-for="user in userPokemon">{{ user.name }}</h2>
-          <div class="hp-bar-bottom">
-            <div class="hp-bar-fill" style="width: 100%"></div>
-          </div>
-          <h4 class="level" v-for="user in userPokemon">{{ user.liv }}</h4>
-          <h4 class="hp" v-for="user in userPokemon">{{ user.health }} / 100</h4>
-        </div>
-        <div class="bottom-menu">
-          <div class="battle-text text-box-left">What will Charizard do?</div>
-          <div class="text-box-right">
-            <div id="battleOptions"v-for="option in optionUserPokemon">
-              <h4 class="battle-text-top-left" >{{ option.option1 }}</h4> <!--Add Button 'Scratch' 'Fly' 'Flamethrower' 'Ember'-->
-              <h4 class="battle-text-top-right">{{ option.option2 }}</h4> <!--You're our only hope Charizard!-->
-              <h4 class="battle-text-bottom-left">{{ option.option3 }}</h4> <!--No items in bag.-->
-              <h4 class="battle-text-bottom-right">{{ option.option4 }}</h4> <!--Can'Espace-->
+    <div class="game-boy">
+      <div class="display2">
+        <h1 class="title">Arredo3 Pokemon Battle</h1>
+        <div class="display">
+          <div id="game">
+            <div class="battle-scene">
+              <div class="box-top-left">
+                <h2 class="pokemon">{{ enemyPokemon.botPokemon }}</h2>
+                <div class="hp-bar-top">
+                  <div
+                    class="hp-bar-fill"
+                    v-bind:style="enemyPokemon.botHpBar"
+                  ></div>
+                </div>
+                <h4 class="level">Lvl. {{ enemyPokemon.botLevel }}</h4>
+              </div>
+              <div class="box-top-right">
+                <img
+                  src="http://pre01.deviantart.net/959a/th/pre/f/2016/075/4/6/095_onix_by_rayo123000-d9vbjj3.png"
+                  class="pokemon-top"
+                />
+              </div>
+              <div class="box-bottom-left">
+                <img
+                  src="http://guidesmedia.ign.com/guides/059687/images/blackwhite/pokemans_006.gif"
+                  class="pokemon-bottom"
+                />
+              </div>
+              <div class="box-bottom-right">
+                <h2 class="pokemon">{{ myPokemon.userPokemon }}</h2>
+                <div class="hp-bar-bottom">
+                  <div
+                    class="hp-bar-fill"
+                    v-bind:style="myPokemon.userHpBar"
+                  ></div>
+                </div>
+                <h4 class="level">Lvl. {{ myPokemon.userLevel }}</h4>
+                <h4 class="hp">{{ myPokemon.userHealth }} / 100</h4>
+              </div>
+              <div class="bottom-menu">
+                <div class="battle-text text-box-left">{{ battleText }}</div>
+                <div class="text-box-right">
+                  <div id="battleOptions" v-if="optionsOn">
+                    <h4 @click="processOption(1)" class="battle-text-top-left">
+                      {{ battleOptions[0] }}
+                    </h4>
+
+                    <h4 @click="processOption(2)" class="battle-text-top-right">
+                      {{ battleOptions[1] }}
+                    </h4>
+
+                    <h4
+                      @click="processOption(3)"
+                      class="battle-text-bottom-left"
+                    >
+                      {{ battleOptions[2] }}
+                    </h4>
+
+                    <h4
+                      @click="processOption(4)"
+                      class="battle-text-bottom-right"
+                    >
+                      {{ battleOptions[3] }}
+                    </h4>
+                  </div>
+
+                  <div v-if="fightOn" id="fightOptions">
+                    <h4 @click="processAttack(1)" class="battle-text-top-left">
+                      {{userOptions[0]}}
+                    </h4>
+                    <h4 @click="processAttack(2)" class="battle-text-top-right">
+                      {{userOptions[1]}}
+                    </h4>
+                    <h4
+                      @click="processAttack(3)"
+                      class="battle-text-bottom-left"
+                    >
+                      {{userOptions[2]}}
+                    </h4>
+                    <h4
+                      @click="processAttack(4)"
+                      class="battle-text-bottom-right"
+                    >
+                      {{userOptions[3]}}
+                    </h4>
+                  </div>
+
+                  <div v-if="endOn" id="resetFight">
+                    <h4 :click="resetFight" class="battle-text-top-left">
+                      {{ endFight[0] }}
+                    </h4>
+                    <h4 class="battle-text-bottom-right">{{ endFight[1] }}</h4>
+                  </div>
+                </div>
+              </div>
             </div>
-            
           </div>
         </div>
       </div>
